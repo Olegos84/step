@@ -1,9 +1,9 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="My Suite" parallel="classes" thread-count="1">
 
-  <parameter name="browserName" value="chrome"/>
-  <parameter name="driversPath" value="external_resources/drivers/"/>
-  <parameter name="baseUrl" value="https://yandex.by/"></parameter>
+  <parameter name="BROWSER_NAME" value="chrome"/>
+  <parameter name="DRIVERS_PATH" value="external_resources/drivers/"/>
+  <parameter name="DEFAULT_PRODUCT_URL" value="https://yandex.by/"></parameter>
 
   <test verbose="1" name="My tests">
     <groups>
@@ -12,7 +12,7 @@
       </run>
     </groups>
     <packages>
-      <package name="org.itstep.selenium.test.*"></package>
+      <package name="org.itstep.selenium.product.yandex.test.*"></package>
     </packages>
   </test>
 </suite>
