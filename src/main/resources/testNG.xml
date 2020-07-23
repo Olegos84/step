@@ -3,7 +3,8 @@
 
   <parameter name="BROWSER_NAME" value="chrome"/>
   <parameter name="DRIVERS_PATH" value="external_resources/drivers/"/>
-  <parameter name="DEFAULT_PRODUCT_URL" value="https://yandex.by/"></parameter>
+  <parameter name="DEFAULT_PRODUCT_URL" value="https://yandex.by/"/>
+  <parameter name="IMPLICIT_WAIT" value="2"/>
 
   <test verbose="1" name="My tests">
     <groups>
@@ -12,7 +13,7 @@
       </run>
     </groups>
     <packages>
-      <package name="org.itstep.selenium.product.yandex.test.*"></package>
+      <package name="org.itstep.selenium.test.*"/>
     </packages>
   </test>
 </suite>

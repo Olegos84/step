@@ -1,14 +1,8 @@
-package org.itstep.selenium.product.yandex.test;
+package org.itstep.selenium.test;
 
-import static org.itstep.selenium.framework.common.SystemProperties.BROWSER_NAME;
-
-import io.github.bonigarcia.wdm.WebDriverManager;
-import java.io.File;
-import org.itstep.selenium.framework.browser.BrowserType;
 import org.itstep.selenium.framework.common.SystemProperties;
+import org.itstep.selenium.framework.ui.WebDriverFactory;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.ISuite;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterMethod;
@@ -36,20 +30,7 @@ public abstract class BaseTest {
 
   @BeforeMethod(alwaysRun = true)
   public void init() {
-    System.setProperty("wdm.cachePath",
-        new File(System.getProperty(SystemProperties.DRIVERS_PATH.getSystemName())).getAbsolutePath());
-    BrowserType browserType = BrowserType.valueOf(System.getProperty(BROWSER_NAME.getSystemName()).toUpperCase());
-    switch (browserType) {
-      case CHROME:
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-        break;
-      case FIREFOX:
-        WebDriverManager.firefoxdriver().setup();
-        driver = new FirefoxDriver();
-        break;
-    }
-    driver.manage().window().maximize();
+    driver = WebDriverFactory.getWebDriver();
   }
 
   @AfterMethod(alwaysRun = true)

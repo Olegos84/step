@@ -1,4 +1,4 @@
-package org.itstep.selenium.product.yandex.test;
+package org.itstep.selenium.test;
 
 import static org.itstep.selenium.product.yandex.common.ErrorMessage.INCORRECT_PASSWORD;
 

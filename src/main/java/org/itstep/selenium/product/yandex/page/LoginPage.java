@@ -23,19 +23,16 @@ public class LoginPage extends BasePage {
 
   public LoginPage typeLogin(String login) {
     loginInput.sendKeys(login);
-    waitFor(2);
     return new LoginPage(driver);
   }
 
   public LoginPage typePassword(String password) {
     passwordInput.sendKeys(password);
-    waitFor(2);
     return new LoginPage(driver);
   }
 
   public LoginPage clickSingInButton() {
     signInButton.click();
-    waitFor(2);
     return new LoginPage(driver);
   }
 

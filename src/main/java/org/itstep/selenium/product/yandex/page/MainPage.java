@@ -20,20 +20,17 @@ public class MainPage extends BasePage {
   public static MainPage open(WebDriver driver) {
     MainPage mainPage = new MainPage(driver);
     driver.get(System.getProperty(SystemProperties.DEFAULT_PRODUCT_URL.getSystemName()));
-    waitFor(2);
     return mainPage;
   }
 
   public LoginPage clickSingInButton() {
     signInButton.click();
-    waitFor(2);
     Set<String> windowHandles = driver.getWindowHandles();
     String currentTab = driver.getWindowHandle();
     windowHandles.remove(currentTab);
     String newTab = (String) windowHandles.toArray()[0];
     driver.close();
     driver.switchTo().window(newTab);
-    waitFor(2);
     return new LoginPage(driver);
   }
 
