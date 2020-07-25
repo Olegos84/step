@@ -6,8 +6,17 @@ import org.itstep.selenium.product.yandex.page.MainPage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+/**
+ * Класс для тестов
+ *
+ * @author <a href="mailto:olegos84@gmail.com">Aleh Ulizko</a>
+ */
 public class YandexTest extends BaseTest {
 
+  /**
+   * Тестовый метод, который идет на яндекс, пытается войти с неверными логином и паролем,
+   * и проверяет сообщение об ошибке
+   */
   @Test(testName = "testYandexLoginNegative",
       groups = {"testThatWork"},
       description = "Verify that user can not login with invalid credentials")

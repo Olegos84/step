@@ -11,7 +11,6 @@
   <properties>
     <selenium.version>3.141.59</selenium.version>
     <testng.version>7.1.0</testng.version>
-    <lombok.version>1.18.12</lombok.version>
     <webdrivermanager.version>4.1.0</webdrivermanager.version>
   </properties>
 
@@ -25,12 +24,6 @@
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
       <version>${testng.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>${lombok.version}</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>io.github.bonigarcia</groupId>

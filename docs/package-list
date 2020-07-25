@@ -1,0 +1,6 @@
+org.itstep.selenium.framework.common
+org.itstep.selenium.framework.ui
+org.itstep.selenium.framework.ui.browser
+org.itstep.selenium.product.yandex.common
+org.itstep.selenium.product.yandex.page
+org.itstep.selenium.test

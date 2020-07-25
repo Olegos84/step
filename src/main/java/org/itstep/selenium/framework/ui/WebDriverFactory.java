@@ -14,11 +14,32 @@ import org.openqa.selenium.WebDriver.Timeouts;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+/**
+ * Класс-фабрика для инициализации {@link WebDriver WebDriver} в зависимости от того, что установлено в
+ * {@link SystemProperties системной переменной}.<br>
+ *   Класс финализирован, т.е. наследоваться от него нельзя<br>
+ *   Класс используется только для вызова метода статического {@link #getWebDriver() getWebDriver()}
+ *
+ * Смотри также <a href="https://vertex-academy.com/tutorials/ru/pattern-factory-java/">Паттерн проектирования Factory - Часть 1</a>
+ * @author <a href="mailto:olegos84@gmail.com">Aleh Ulizko</a>
+ */
 public final class WebDriverFactory {
 
+  /**
+   * Конструктор объявлен как приватный, что запрещает создание объектов данного класса.
+   */
   private WebDriverFactory() {
   }
 
+  /**
+   * Метод читает системную переменную {@link SystemProperties}, которую потом пытается превратить
+   * в один из {@link BrowserType}. В случае удачного превращения, т.е. когда в системной переменной лежит имя
+   * браузера, который поддерживается, происходит инициализация необходимого браузера.
+   * Если такой браузер не поддерживается, или его имя написано с ошибкой будет брошено
+   * исключение {@link NotImplementedException}.
+   *
+   * @return Инициализированный и настроенный для работы {@link WebDriver WebDriver}
+   */
   public static WebDriver getWebDriver() {
     System.setProperty("wdm.cachePath",
         new File(System.getProperty(SystemProperties.DRIVERS_PATH.getSystemName())).getAbsolutePath());
