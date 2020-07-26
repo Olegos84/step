@@ -1,50 +1,30 @@
 package org.itstep.selenium.product.yandex.page;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
+import static org.itstep.selenium.framework.ui.element.LocatorType.*;
+
+import org.itstep.selenium.framework.ui.element.Button;
+import org.itstep.selenium.framework.ui.element.Input;
+import org.itstep.selenium.framework.ui.element.MessageField;
 
 /**
- * Класс который описывает <a href="https://passport.yandex.by/">Страницу входа</a>.<br>
- * Смотри: <a href="http://internetka.in.ua/selenium-page-object/">Selenium и Page Object паттерн</a>
+ * Класс который описывает <a href="https://passport.yandex.by/">Страницу входа</a>.<br> Смотри: <a
+ * href="http://internetka.in.ua/selenium-page-object/">Selenium и Page Object паттерн</a>
  *
  * @author <a href="mailto:olegos84@gmail.com">Aleh Ulizko</a>
  */
 public class LoginPage extends BasePage {
 
-  /**
-   * CSS локатор по классу поля где появляется сообщение об ошибке
-   */
-  private static final String ERROR_MESSAGE_CLASS_LOCATOR = "passp-form-field__error";
-  /**
-   * Переменная для хранения поля ввода имени пользователя
-   */
-  @FindBy(id = "passp-field-login")
-  private WebElement loginInput;
-  /**
-   * Переменная для хранения поля ввода пароля
-   */
-  @FindBy(id = "passp-field-passwd")
-  private WebElement passwordInput;
-  /**
-   * Переменная для хранения кнопки войти
-   */
-  @FindBy(xpath = "//*[@type='submit']")
-  private WebElement signInButton;
+  //Locators
+  private static final String ERROR_MESSAGE_CSS_SELECTOR = ".passp-form-field__error";
+  private static final String LOGIN_INPUT_CSS_SELECTOR = "#passp-field-login";
+  private static final String PASSWORD_INPUT_CSS_SELECTOR = "#passp-field-passwd";
+  private static final String SIGN_IN_BUTTON_XPATH_LOCATOR = "//*[@type='submit']";
 
-  /**
-   * Конструктор, предназначен для создания объекта данной страницы. <br>
-   *   В конструкторе вызывается PageFactory.initElements(driver, this) для инициализации элементов с аннотациями
-   *   FindBy
-   *
-   * @param driver Веб драйвер
-   */
-  public LoginPage(WebDriver driver) {
-    super(driver);
-    PageFactory.initElements(driver, this);
-  }
+  //Elements
+  private static MessageField errorMessage = new MessageField(CSS, ERROR_MESSAGE_CSS_SELECTOR);
+  private static Input loginInput = new Input(CSS, LOGIN_INPUT_CSS_SELECTOR);
+  private static Input passwordInput = new Input(CSS, PASSWORD_INPUT_CSS_SELECTOR);
+  private static Button signInButton = new Button(XPATH, SIGN_IN_BUTTON_XPATH_LOCATOR);
 
   /**
    * Вводит имя пользователя на странице
@@ -53,8 +33,8 @@ public class LoginPage extends BasePage {
    * @return возвращает текущую страницу
    */
   public LoginPage typeLogin(String login) {
-    loginInput.sendKeys(login);
-    return new LoginPage(driver);
+    loginInput.type(login);
+    return this;
   }
 
   /**
@@ -64,8 +44,8 @@ public class LoginPage extends BasePage {
    * @return возвращает текущую страницу
    */
   public LoginPage typePassword(String password) {
-    passwordInput.sendKeys(password);
-    return new LoginPage(driver);
+    passwordInput.type(password);
+    return this;
   }
 
   /**
@@ -75,7 +55,7 @@ public class LoginPage extends BasePage {
    */
   public LoginPage clickSingInButton() {
     signInButton.click();
-    return new LoginPage(driver);
+    return this;
   }
 
   /**
@@ -84,6 +64,6 @@ public class LoginPage extends BasePage {
    * @return текст ошибки
    */
   public String getErrorMessageText() {
-    return driver.findElement(By.className(ERROR_MESSAGE_CLASS_LOCATOR)).getText();
+    return errorMessage.getText();
   }
 }

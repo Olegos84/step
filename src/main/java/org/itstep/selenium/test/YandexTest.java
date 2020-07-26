@@ -21,7 +21,7 @@ public class YandexTest extends BaseTest {
       groups = {"testThatWork"},
       description = "Verify that user can not login with invalid credentials")
   public void testYandexLoginNegative() {
-    String actualErrorMessageText = MainPage.open(driver)
+    String actualErrorMessageText = MainPage.open()
         .clickSingInButton()
         .typeLogin("Aleh")
         .clickSingInButton()

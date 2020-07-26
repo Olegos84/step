@@ -1,12 +1,10 @@
 package org.itstep.selenium.test;
 
 import org.itstep.selenium.framework.common.SystemProperties;
-import org.itstep.selenium.framework.ui.WebDriverFactory;
-import org.openqa.selenium.WebDriver;
-import org.testng.ISuite;
+import org.itstep.selenium.framework.common.SystemPropertiesInitializer;
+import org.itstep.selenium.framework.ui.browser.Browser;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
 /**
@@ -15,11 +13,6 @@ import org.testng.annotations.BeforeSuite;
  * @author <a href="mailto:olegos84@gmail.com">Aleh Ulizko</a>
  */
 public abstract class BaseTest {
-
-  /**
-   * Переменная для хранения веб драйвера
-   */
-  protected WebDriver driver;
 
   /**
    * Метод который будет автоматически запускаться перед каждым новым сьютом.<br>
@@ -33,26 +26,7 @@ public abstract class BaseTest {
    */
   @BeforeSuite(alwaysRun = true)
   public void initSuite(ITestContext testContext) {
-    SystemProperties[] systemProperties = SystemProperties.values();
-    ISuite suite = testContext.getSuite();
-    String propertyNameInSystem;
-    String defaultValue;
-    for (SystemProperties property : systemProperties) {
-      defaultValue = suite.getParameter(property.name());
-      propertyNameInSystem = property.getSystemName();
-      if (System.getProperty(propertyNameInSystem) == null) {
-        System.setProperty(propertyNameInSystem, defaultValue);
-      }
-    }
-  }
-
-  /**
-   * Метод, который запускается перед каждым тестовым методом. В нем создается каждый раз новый драйвер,
-   * а следовательно открывается новый браузер
-   */
-  @BeforeMethod(alwaysRun = true)
-  public void init() {
-    driver = WebDriverFactory.getWebDriver();
+    SystemPropertiesInitializer.initSystemProperties(testContext);
   }
 
   /**
@@ -60,6 +34,6 @@ public abstract class BaseTest {
    */
   @AfterMethod(alwaysRun = true)
   public void teardown() {
-    driver.quit();
+    Browser.getBrowser().close();
   }
 }
