@@ -6,6 +6,11 @@
   <parameter name="DEFAULT_PRODUCT_URL" value="https://yandex.by/"/>
   <parameter name="IMPLICIT_WAIT" value="2"/>
 
+  <listeners>
+    <listener class-name="org.itstep.selenium.framework.listener.SuiteListener"/>
+    <listener class-name="org.itstep.selenium.framework.listener.TestListener"/>
+  </listeners>
+
   <test verbose="1" name="My tests">
     <groups>
       <run>

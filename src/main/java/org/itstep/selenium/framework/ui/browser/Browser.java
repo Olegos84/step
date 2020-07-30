@@ -1,6 +1,8 @@
 package org.itstep.selenium.framework.ui.browser;
 
 import java.util.Set;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.itstep.selenium.framework.ui.WebDriverFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -12,7 +14,10 @@ public class Browser implements WrapsDriver {
   private static ThreadLocal<Browser> instance = new ThreadLocal<Browser>();
 
   private Browser() {
+    Logger logger = LogManager.getLogger();
+    logger.info("New Browser is starting...");
     driver = WebDriverFactory.getWebDriver();
+    logger.info("Browser is started");
   }
 
   public synchronized static Browser getBrowser() {
@@ -47,9 +52,9 @@ public class Browser implements WrapsDriver {
     driver.switchTo().window(newTab);
   }
 
-  public void close() {
+  public static void close() {
     if (instance.get() != null) {
-      driver.quit();
+      instance.get().getWrappedDriver().quit();
     }
     instance.set(null);
   }

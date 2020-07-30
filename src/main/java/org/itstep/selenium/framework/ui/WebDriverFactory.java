@@ -8,11 +8,13 @@ import java.io.File;
 import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang3.NotImplementedException;
 import org.itstep.selenium.framework.common.SystemProperties;
+import org.itstep.selenium.framework.listener.WebDriverListener;
 import org.itstep.selenium.framework.ui.browser.BrowserType;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriver.Timeouts;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 /**
  * Класс-фабрика для инициализации {@link WebDriver WebDriver} в зависимости от того, что установлено в
@@ -69,6 +71,9 @@ public final class WebDriverFactory {
     Timeouts timeouts = driver.manage().timeouts();
     timeouts.implicitlyWait(implicitWait, TimeUnit.SECONDS);
     driver.manage().window().maximize();
+    EventFiringWebDriver eventFiringWebDriver = new EventFiringWebDriver(driver);
+    eventFiringWebDriver.register(new WebDriverListener());
+    driver = eventFiringWebDriver;
     return driver;
   }
 }
