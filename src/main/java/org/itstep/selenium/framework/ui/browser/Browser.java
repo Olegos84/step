@@ -1,17 +1,24 @@
 package org.itstep.selenium.framework.ui.browser;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Set;
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.itstep.selenium.framework.ui.WebDriverFactory;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WrapsDriver;
 
 public class Browser implements WrapsDriver {
 
   private WebDriver driver;
-  private static ThreadLocal<Browser> instance = new ThreadLocal<Browser>();
+  private static ThreadLocal<Browser> instance = new ThreadLocal<>();
 
   private Browser() {
     Logger logger = LogManager.getLogger();
@@ -32,15 +39,34 @@ public class Browser implements WrapsDriver {
   }
 
   public void type(By by, String text) {
-    driver.findElement(by).sendKeys(text);
+    findElement(by).sendKeys(text);
   }
 
   public String getText(By by) {
-    return driver.findElement(by).getText();
+    return findElement(by).getText();
   }
 
   public void click(By by) {
-    driver.findElement(by).click();
+    WebElement element = findElement(by);
+    try {
+      //wait!!!!
+      element.click();
+    } catch (Exception e) {
+      screenshot();
+      throw new RuntimeException(e);
+    }
+  }
+
+  private WebElement findElement(By by) {
+    WebElement element;
+    try {
+      //Wait!!!
+      element = driver.findElement(by);
+    } catch (NoSuchElementException e) {
+      screenshot();
+      throw e;
+    }
+    return element;
   }
 
   public void switchToNewTab() {
@@ -57,6 +83,16 @@ public class Browser implements WrapsDriver {
       instance.get().getWrappedDriver().quit();
     }
     instance.set(null);
+  }
+
+  public void screenshot() {
+    File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+    try {
+      FileUtils.copyFileToDirectory(screenshot, new File("external_resources/report/screenshotes/"));
+    } catch (IOException e) {
+      LogManager.getLogger().error(e);
+      throw new RuntimeException(e);
+    }
   }
 
   public WebDriver getWrappedDriver() {

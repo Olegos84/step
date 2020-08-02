@@ -9,11 +9,26 @@
   <version>1.0-SNAPSHOT</version>
 
   <properties>
+    <java.version>8</java.version>
     <selenium.version>3.141.59</selenium.version>
     <testng.version>7.1.0</testng.version>
     <webdrivermanager.version>4.1.0</webdrivermanager.version>
     <log4j.version>2.13.3</log4j.version>
+    <commons-io.version>2.7</commons-io.version>
   </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
   <dependencies>
     <dependency>
@@ -45,6 +60,11 @@
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-slf4j-impl</artifactId>
       <version>${log4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>${commons-io.version}</version>
     </dependency>
 
   </dependencies>
