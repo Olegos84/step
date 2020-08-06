@@ -6,6 +6,8 @@ import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.itstep.selenium.framework.common.SystemProperties;
+import org.itstep.selenium.framework.reporter.Reporter;
 import org.itstep.selenium.framework.ui.WebDriverFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -25,6 +27,7 @@ public class Browser implements WrapsDriver {
     logger.info("New Browser is starting...");
     driver = WebDriverFactory.getWebDriver();
     logger.info("Browser is started");
+    Reporter.getReporter().reportInfo("Browser is started");
   }
 
   public synchronized static Browser getBrowser() {
@@ -36,10 +39,19 @@ public class Browser implements WrapsDriver {
 
   public void open(String url) {
     this.driver.get(url);
+    Reporter.getReporter().reportInfo("Browser go to URL: " + url);
   }
 
   public void type(By by, String text) {
-    findElement(by).sendKeys(text);
+    WebElement element = findElement(by);
+    try {
+      element.sendKeys(text);
+    } catch (Exception e) {
+      Reporter.getReporter().reportError(String.format("Can not type %s to By: %s", text, by));
+      screenshot();
+      throw new RuntimeException(e);
+    }
+    Reporter.getReporter().reportPass(String.format("Typed %s to By: %s", text, by));
   }
 
   public String getText(By by) {
@@ -49,33 +61,41 @@ public class Browser implements WrapsDriver {
   public void click(By by) {
     WebElement element = findElement(by);
     try {
-      //wait!!!!
       element.click();
     } catch (Exception e) {
+      Reporter.getReporter().reportError("Can not click by element By: " + by);
       screenshot();
       throw new RuntimeException(e);
     }
+    Reporter.getReporter().reportPass("Clicked  by element", by.toString());
   }
 
   private WebElement findElement(By by) {
     WebElement element;
     try {
-      //Wait!!!
       element = driver.findElement(by);
     } catch (NoSuchElementException e) {
+      Reporter.getReporter().reportError("Can not find element", by.toString());
       screenshot();
       throw e;
     }
+    Reporter.getReporter().reportPass("Element is found", by.toString());
     return element;
   }
 
   public void switchToNewTab() {
-    Set<String> windowHandles = driver.getWindowHandles();
-    String currentTab = driver.getWindowHandle();
-    windowHandles.remove(currentTab);
-    String newTab = (String) windowHandles.toArray()[0];
-    driver.close();
-    driver.switchTo().window(newTab);
+    try {
+      Set<String> windowHandles = driver.getWindowHandles();
+      String currentTab = driver.getWindowHandle();
+      windowHandles.remove(currentTab);
+      String newTab = (String) windowHandles.toArray()[0];
+      driver.close();
+      driver.switchTo().window(newTab);
+    } catch (Exception e) {
+      Reporter.getReporter().reportError("Can not switch to new tab");
+      screenshot();
+      throw new RuntimeException(e);
+    }
   }
 
   public static void close() {
@@ -85,14 +105,20 @@ public class Browser implements WrapsDriver {
     instance.set(null);
   }
 
-  public void screenshot() {
+  public File screenshot() {
     File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+    File outputFolder = new File(System.getProperty(SystemProperties.SCREENSHOT_PATH.getSystemName()));
+    String fileName = outputFolder + "/" + screenshot.getName();
     try {
-      FileUtils.copyFileToDirectory(screenshot, new File("external_resources/report/screenshotes/"));
+      FileUtils.copyFileToDirectory(screenshot, outputFolder);
     } catch (IOException e) {
-      LogManager.getLogger().error(e);
+      Reporter.getReporter().reportError("Browser can not save screenshot: ");
+      Reporter.getReporter().reportError(e);
       throw new RuntimeException(e);
     }
+    File screenshotFile = new File(fileName);
+    Reporter.getReporter().reportImage(screenshotFile);
+    return screenshotFile;
   }
 
   public WebDriver getWrappedDriver() {

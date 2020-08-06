@@ -3,12 +3,15 @@
 
   <parameter name="BROWSER_NAME" value="chrome"/>
   <parameter name="DRIVERS_PATH" value="external_resources/drivers/"/>
+  <parameter name="REPORT_PATH" value="external_resources/report/html/"/>
   <parameter name="DEFAULT_PRODUCT_URL" value="https://yandex.by/"/>
+  <parameter name="SCREENSHOT_PATH" value="external_resources/report/screenshotes/"/>
   <parameter name="IMPLICIT_WAIT" value="2"/>
 
   <listeners>
     <listener class-name="org.itstep.selenium.framework.listener.SuiteListener"/>
     <listener class-name="org.itstep.selenium.framework.listener.TestListener"/>
+    <listener class-name="org.itstep.selenium.framework.listener.MethodListener"/>
   </listeners>
 
   <test verbose="1" name="My tests">

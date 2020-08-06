@@ -2,8 +2,8 @@ package org.itstep.selenium.test;
 
 import static org.itstep.selenium.product.yandex.common.ErrorMessage.INCORRECT_PASSWORD;
 
+import org.itstep.selenium.product.yandex.page.LoginPage;
 import org.itstep.selenium.product.yandex.page.MainPage;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -21,13 +21,23 @@ public class YandexTest extends BaseTest {
       groups = {"testThatWork"},
       description = "Verify that user can not login with invalid credentials")
   public void testYandexLoginNegative() {
-    String actualErrorMessageText = MainPage.open()
+
+    reporter.reportStep("Open login page");
+    MainPage mainPage = MainPage.open();
+
+    String testLogin = "Aleh";
+    String testPassword = "123456789";
+    reporter.reportStep("Try to login", "login: " + testLogin, "password: " + testPassword);
+    LoginPage loginPage = mainPage.clickSingInButton()
+        .typeLogin(testLogin)
         .clickSingInButton()
-        .typeLogin("Aleh")
-        .clickSingInButton()
-        .typePassword("123456789")
-        .clickSingInButton()
-        .getErrorMessageText();
-    Assert.assertEquals(actualErrorMessageText, INCORRECT_PASSWORD.getMessage(), "Verify Error message text");
+        .typePassword(testPassword)
+        .clickSingInButton();
+
+    reporter.reportStep("Verify error message");
+    String actualErrorMessageText = loginPage.getErrorMessageText();
+    assertion.assertEquals(actualErrorMessageText, INCORRECT_PASSWORD.getMessage(), "Verify Error message text");
+
+    assertion.assertAll();
   }
 }
