@@ -16,9 +16,12 @@
     <log4j.version>2.13.3</log4j.version>
     <commons-io.version>2.7</commons-io.version>
     <extentreports.version>4.1.7</extentreports.version>
+    <jcommander.version>1.78</jcommander.version>
+    <file.name>ui-automation</file.name>
   </properties>
 
   <build>
+    <finalName>${file.name}</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -27,6 +30,55 @@
           <source>${java.version}</source>
           <target>${java.version}</target>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.3.0</version>
+        <configuration>
+          <finalName>${file.name}</finalName>
+          <archive>
+            <manifest>
+              <mainClass>org.itstep.selenium.framework.runner.Runner</mainClass>
+            </manifest>
+          </archive>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <appendAssemblyId>false</appendAssemblyId>
+        </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-resources-plugin</artifactId>
+      <version>3.1.0</version>
+      <executions>
+      <execution>
+      <id>copy-resources</id>
+      <phase>package</phase>
+      <goals>
+        <goal>copy-resources</goal>
+      </goals>
+        <configuration>
+          <resources>
+            <resource>
+              <directory>external_resources/suite</directory>
+              <filtering>false</filtering>
+            </resource>
+          </resources>
+          <outputDirectory>${project.build.directory}/external_resources/suite</outputDirectory>
+        </configuration>
+      </execution>
+      </executions>
       </plugin>
     </plugins>
   </build>
@@ -71,6 +123,11 @@
       <groupId>com.aventstack</groupId>
       <artifactId>extentreports</artifactId>
       <version>${extentreports.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.beust</groupId>
+      <artifactId>jcommander</artifactId>
+      <version>${jcommander.version}</version>
     </dependency>
 
   </dependencies>

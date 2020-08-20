@@ -1,6 +1,7 @@
 # Compiled class file
 *.class
 target/
+test-output/
 
 #IDEA
 .idea/
@@ -24,7 +25,8 @@ target/
 *.tar.gz
 *.rar
 *.exe
-external_resources
+external_resources/drivers
+external_resources/report
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
